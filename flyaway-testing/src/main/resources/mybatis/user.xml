@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lihuia.flyaway.testing.mysql.mapper.UserMapper">
+    <resultMap id="UserResult" type="com.lihuia.flyaway.testing.mysql.entity.UserDO">
+        <result property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="token" column="token"/>
+        <result property="effectTime" column="effect_time"/>
+        <result property="expireTime" column="expire_time"/>
+    </resultMap>
+
+    <sql id="table_name">
+        user
+    </sql>
+
+    <sql id="select-column-list">
+        `id`,
+        `username`,
+        `password`,
+        `token`,
+        `effect_time`,
+        `expire_time`
+    </sql>
+
+    <sql id="set">
+        <if test="id != null">id=#{id},</if>
+        <if test="username != null">username=#{username},</if>
+        <if test="password != null">password=#{password},</if>
+        <if test="token != null">token=#{token},</if>
+        <if test="effectTime != null">effect_time=#{effectTime},</if>
+        <if test="expireTime != null">expire_time=#{expireTime},</if>
+    </sql>
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="com.lihuia.flyaway.testing.mysql.entity.UserDO">
+        insert
+        <include refid="table_name"/>
+        <set>
+            <include refid="set"/>
+        </set>
+    </insert>
+
+    <delete id="delete">
+        delete from
+        <include refid="table_name"/>
+        where 1=1
+        <if test="id != null">and id=#{id}</if>
+    </delete>
+
+    <update id="update" parameterType="com.lihuia.flyaway.testing.mysql.entity.UserDO">
+        update
+        <include refid="table_name"/>
+        <set>
+            <include refid="set"/>
+        </set>
+        where 1=1
+        <if test="id != null">and id=#{id}</if>
+    </update>
+
+    <select id="getById" resultMap="UserResult">
+        select
+        <include refid="select-column-list"/>
+        from
+        <include refid="table_name"/>
+        where 1=1
+        <if test="id != null">and id=#{id}</if>
+    </select>
+
+    <select id="getAll" resultMap="UserResult">
+        select
+        <include refid="select-column-list"/>
+        from
+        <include refid="table_name"/>
+        where 1=1
+    </select>
+</mapper>
